@@ -26,14 +26,14 @@ class MyExpression(Expression):
     def forward(self, data, template: str = '', *args, **kwargs):
         lang = kwargs.get("language", "en")
         bin_size_s = int(kwargs.get("bin_size_s", 5 * 60)) #@NOTE: default to 5 minutes bins
-        export_path = kwargs.get("export_path", Path.cwd())
+        export_dir = kwargs.get("export_dir", Path.cwd())
         whisper = Interface("whisper")
         transcript = whisper(data, language=lang, word_timestamps=True, disable_pbar=True)
         bins = self.get_bins(transcript.value, bin_size_s)
         chapters = "\n".join([self.fn(bin).value for bin in bins])
-        pd.DataFrame(chapters.split("\n"), columns=["Chapters"]).dropna().to_csv(Path(export_path) / "chapters.csv")
-        pd.DataFrame(transcript.value.split("\n"), columns=["Transcript"]).dropna().to_csv(Path(export_path) / "transcript.csv")
-        return f"Files were successfully exported to {export_path} as chapters.csv and transcript.csv"
+        pd.DataFrame(chapters.split("\n"), columns=["Chapters"]).dropna().to_csv(Path(export_dir) / "chapters.csv")
+        pd.DataFrame(transcript.value.split("\n"), columns=["Transcript"]).dropna().to_csv(Path(export_dir) / "transcript.csv")
+        return f"Files were successfully exported to {export_dir} as chapters.csv and transcript.csv"
 
     def get_bins(self, data: str, bin_size_s: int) -> str:
         tmps = map(self.seconds, re.findall(r"\b\d{2}:\d{2}:\d{2}\b", data))
