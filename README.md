@@ -16,8 +16,8 @@ symrun c symscribe ExtensityAI/symscribe
 ```
 ## Usage
 Supported features:
-- Whisper models: all models supported by `symbolicai` (default: `"model=whisper:en:base"`)
-  - To change the model, before you run the `symscribe` do `export SPEECH_ENGINE_MODEL="..."`, where `...` is the model name ([available](https://github.com/openai/whisper#available-models-and-languages).
+- Whisper models: all models supported by `symbolicai` (default: `"base"`)
+  - To change the model, before you run the `symscribe` do `export SPEECH_ENGINE_MODEL="..."`, where `...` is the model name ([available](https://github.com/openai/whisper#available-models-and-languages)).
 - Language: `"language=..."` (default: `"language=en"`)
 - Export directory: `"export_dir=..."` (default: `"export_dir=."`)
 - Bin size: `"bin_size_s=..."` (default: `"bin_size_s=300"`)
