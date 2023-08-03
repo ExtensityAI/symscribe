@@ -25,5 +25,5 @@ Supported features:
 
 Example:
 ```bash
-symrun symscribe "path_to_file.mp3/mp4/..." "language=en" "export_dir=/tmp" "bin_size=300"
+symrun symscribe "path_to_file.mp3/mp4/..." "language=en" "export_dir=/tmp" "bin_size_s=300"
 
