@@ -6,16 +6,14 @@ import pandas as pd
 from symai import Expression, Function, Interface
 
 FUNCTION_DESCRIPTION = '''
-Transcription Guidelines:
-    Create new chapters at logical topic transitions.
-    Highlight significant events or discussions.
-    Keep chapter headings concise, use less than 2 words.
-    Respect the timestamps.
-    Use commas to separate multiple topics, but don't use commas at the end of the line.
-    Use a blank line as seperator between chapters.
-    Don't add quotes or other special characters other than the ones required by the template.
-    Template:
-        HH:MM:SS - {comma separated headings}\n
+TRANSCRIPTION_GUIDELINES:
+    START_CHAPTER: "Create new chapters at logical transitions."
+    HIGHLIGHT_EVENTS: "Highlight significant events."
+    KEEP_CONCISE: "Keep the headings concise; use at most four words per heading."
+    MAKE_CATCHY: "Make the headings catchy."
+    USE_BLANK_LINE: "Use a blank line as separator between chapters."
+    AVOID_QUOTES: "Don't add quotes or special characters other than the ones required by the template."
+    TEMPLATE: "HH:MM:SS - heading\n"
 '''
 
 class MyExpression(Expression):
@@ -31,7 +29,7 @@ class MyExpression(Expression):
         transcript = whisper(data, language=lang, word_timestamps=True, disable_pbar=True)
         bins = self._get_bins(transcript.value, bin_size_s)
         chapters = "\n".join([self.fn(bin).value for bin in bins])
-        pd.DataFrame(self._naive_format_validator(chapters),columns=["Chapters"]).to_csv(Path(export_dir) / "chapters.csv")
+        pd.DataFrame(self._naive_format_validator(chapters), columns=["Chapters"]).to_csv(Path(export_dir) / "chapters.csv")
         pd.DataFrame(transcript.value.split("\n"), columns=["Transcript"]).to_csv(Path(export_dir) / "transcript.csv")
         return f"Files were successfully exported to {export_dir} as chapters.csv and transcript.csv"
 
@@ -60,6 +58,8 @@ class MyExpression(Expression):
             if _.startswith("'"):
                 _ = _[1:]
             if _.endswith("'"):
+                _ = _[:-1]
+            if _.endswith(","):
                 _ = _[:-1]
             sval.append(_)
         return sval
