@@ -2,6 +2,9 @@
 A repository for transcribing audio files using Whisper. It provides guidelines for creating chapters at logical topic transitions, with concise headings and respect for timestamps. It performs transcription and export the results as `chapters.csv` and `transcript.csv` files.
 
 ## Installation
+
+See more info at the original [Repository](https://github.com/ExtensityAI/symbolicai).
+
 1. Install `symbolicai`
 ```bash
 pip install symbolicai[whisper]
