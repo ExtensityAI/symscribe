@@ -17,8 +17,8 @@ TRANSCRIPTION_GUIDELINES:
 '''
 
 class MyExpression(Expression):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.fn = Function(FUNCTION_DESCRIPTION)
 
     def forward(self, data, template: str = '', *args, **kwargs):
