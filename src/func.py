@@ -1,3 +1,4 @@
+import os
 import re
 from typing import List
 from pathlib import Path
@@ -25,8 +26,17 @@ class MyExpression(Expression):
         lang = kwargs.get("language", "en")
         bin_size_s = int(kwargs.get("bin_size_s", 5 * 60)) #@NOTE: default to 5 minutes bins
         export_dir = kwargs.get("export_dir", Path.cwd())
+        transcript_only = eval(kwargs.get("transcript_only", "True")) #@NOTE: default to True
+
+        if not os.path.exists(export_dir):
+            os.makedirs(export_dir)
+
         whisper = Interface("whisper")
-        transcript = whisper(data, language=lang, word_timestamps=True, disable_pbar=True)
+        transcript = whisper(data, language=lang, without_timestamps=False, disable_pbar=True)
+        if transcript_only:
+            pd.DataFrame(transcript.value.split("\n"), columns=["Transcript"]).to_csv(Path(export_dir) / "transcript.csv")
+            return f"File was successfully exported to {export_dir} as transcript.csv"
+
         bins = self._get_bins(transcript.value, bin_size_s)
         chapters = "\n".join([self.fn(bin).value for bin in bins])
         pd.DataFrame(self._naive_format_validator(chapters), columns=["Chapters"]).to_csv(Path(export_dir) / "chapters.csv")

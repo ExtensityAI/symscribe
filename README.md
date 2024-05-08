@@ -23,10 +23,13 @@ Supported features:
   - To change the model, before you run the `symscribe` do `export SPEECH_ENGINE_MODEL="..."`, where `...` is the model name ([available](https://github.com/openai/whisper#available-models-and-languages)).
 - Language: `"language=..."` (default: `"language=en"`)
 - Export directory: `"export_dir=..."` (default: `"export_dir=."`)
+- Transcription format: `"transcript_only=..."` (default: `"transcript_only=True"`)
+  - If `transcript_only=True`, the script will only export the transcript without creating chapters.
 - Bin size: `"bin_size_s=..."` (default: `"bin_size_s=300"`)
   - The bin size is the duration of each audio file in seconds when splitting the audio file into smaller chunks.
 
 Example:
 ```bash
-symrun symscribe "path_to_file.mp3/mp4/..." "language=en" "export_dir=/tmp" "bin_size_s=300"
+symrun symscribe "path_to_file.mp3/mp4/..." "language=en" "export_dir=/tmp" "bin_size_s=300" "transcript_only=True"
+```
 
